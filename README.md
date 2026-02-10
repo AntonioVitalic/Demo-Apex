@@ -77,6 +77,7 @@ Notas:
 
 ## Cómo ejecutar
 
+En una terminal se inicia el backend (API REST):
 ### 1) Backend
 
 ```bash
@@ -84,6 +85,8 @@ cd backend/src/InvoiceManager.Api
 dotnet restore
 dotnet run
 ```
+
+Y en otra terminal se ejecuta el frontend:
 
 ### 2) Frontend
 

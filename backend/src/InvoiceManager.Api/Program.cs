@@ -28,6 +28,9 @@ builder.Services.AddSingleton<IClock, SystemClock>();
 builder.Services.AddSingleton<InvoiceStatusCalculator>();
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 
+// Import on startup
+builder.Services.AddHostedService<JsonInvoiceImportHostedService>();
+
 var app = builder.Build();
 
 // Create DB + views on startup

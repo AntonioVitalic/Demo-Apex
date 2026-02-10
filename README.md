@@ -92,3 +92,5 @@ cd frontend
 npm install
 npm run dev
 ```
+
+Luego de lo anterior, se insta a visitar `http://localhost:5173` para interactuar con la aplicación web y además visitar `http://localhost:5000/swagger/index.html` para explorar la API REST y probar endpoints directamente desde Swagger UI.

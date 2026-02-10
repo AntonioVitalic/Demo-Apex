@@ -1,4 +1,5 @@
 using InvoiceManager.Api.Domain;
+using InvoiceManager.Api.Views;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -11,6 +12,11 @@ public class AppDbContext : DbContext
     public DbSet<Invoice> Invoices => Set<Invoice>();
     public DbSet<InvoiceDetail> InvoiceDetails => Set<InvoiceDetail>();
     public DbSet<CreditNote> CreditNotes => Set<CreditNote>();
+
+    // Keyless sets for SQLite views
+    public DbSet<InvoiceSearchRow> InvoiceSearchRows => Set<InvoiceSearchRow>();
+    public DbSet<InconsistentInvoiceRow> InconsistentInvoiceRows => Set<InconsistentInvoiceRow>();
+    public DbSet<OverdueNoActionRow> OverdueNoActionRows => Set<OverdueNoActionRow>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -64,6 +70,30 @@ public class AppDbContext : DbContext
 
             // Unique per invoice
             entity.HasIndex(cn => new { cn.InvoiceNumber, cn.CreditNoteNumber }).IsUnique();
+        });
+
+        // Views (keyless)
+        modelBuilder.Entity<InvoiceSearchRow>(entity =>
+        {
+            entity.HasNoKey();
+            entity.ToView("vw_invoice_search");
+            entity.Property(v => v.InvoiceDate).HasConversion(dateOnlyConverter);
+            entity.Property(v => v.PaymentDueDate).HasConversion(dateOnlyConverter);
+        });
+
+        modelBuilder.Entity<InconsistentInvoiceRow>(entity =>
+        {
+            entity.HasNoKey();
+            entity.ToView("vw_inconsistent_invoices");
+            entity.Property(v => v.InvoiceDate).HasConversion(dateOnlyConverter);
+        });
+
+        modelBuilder.Entity<OverdueNoActionRow>(entity =>
+        {
+            entity.HasNoKey();
+            entity.ToView("vw_report_overdue_30_no_action");
+            entity.Property(v => v.InvoiceDate).HasConversion(dateOnlyConverter);
+            entity.Property(v => v.PaymentDueDate).HasConversion(dateOnlyConverter);
         });
     }
 }

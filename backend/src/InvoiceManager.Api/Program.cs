@@ -1,4 +1,5 @@
 using InvoiceManager.Api.Data;
+using InvoiceManager.Api.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     var connectionString = builder.Configuration.GetConnectionString("Default") ?? "Data Source=invoice_manager.db";
     options.UseSqlite(connectionString);
 });
+
+// Repository DI
+builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
 
 var app = builder.Build();
 

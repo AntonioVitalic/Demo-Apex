@@ -20,11 +20,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 var app = builder.Build();
 
-// Create DB on startup
+// Create DB + views on startup
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.EnsureCreated();
+    await DbViews.EnsureViewsAsync(db);
 }
 
 // Swagger enabled for easier evaluation

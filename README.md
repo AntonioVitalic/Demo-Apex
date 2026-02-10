@@ -77,8 +77,18 @@ Notas:
 
 ## Cómo ejecutar
 
-## Backend
+### 1) Backend
+
 ```bash
 cd backend/src/InvoiceManager.Api
 dotnet restore
 dotnet run
+```
+
+### 2) Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```

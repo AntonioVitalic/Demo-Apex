@@ -1,5 +1,6 @@
 using InvoiceManager.Api.Data;
 using InvoiceManager.Api.Repositories;
+using InvoiceManager.Api.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +22,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Repository DI
 builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+
+// Services DI
+builder.Services.AddSingleton<IClock, SystemClock>();
+builder.Services.AddSingleton<InvoiceStatusCalculator>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 
 var app = builder.Build();
 
